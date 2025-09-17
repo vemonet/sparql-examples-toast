@@ -31,7 +31,7 @@ jobs:
         python-version: '3.x'
 
     - name: Download SPARQL examples utils
-      run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.19/sparql-examples-utils-2.0.19-uber.jar" -O sparql-examples-utils.jar
+      run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.20/sparql-examples-utils-2.0.20-uber.jar" -O sparql-examples-utils.jar
 
     - name: Parse issue and create turtle file
       id: create_turtle
@@ -41,6 +41,7 @@ jobs:
 
     - name: Show turtle file content
       run: |
+        ls -alh examples/tmp
         echo "Content of ${{ steps.create_turtle.outputs.turtle_file }}:"
         cat "${{ steps.create_turtle.outputs.turtle_file }}"
 
