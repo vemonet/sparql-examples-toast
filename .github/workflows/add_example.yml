@@ -1,0 +1,149 @@
+name: Validate SPARQL Query from Issue
+
+permissions:
+  issues: write
+  contents: write
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  validate_query:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'add-example')
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v5
+
+    - name: Set up Java
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Download SPARQL examples utils
+      run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.19/sparql-examples-utils-2.0.19-uber.jar" -O sparql-examples-utils.jar
+
+    - name: Parse issue and create turtle file
+      id: create_turtle
+      run: python3 .github/scripts/generate_turtle.py
+      env:
+        GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
+
+    - name: Validate SPARQL query
+      id: validate
+      run: |
+        echo "Running validation on examples/tmp directory..."
+        # Run validation only on the tmp directory
+        if java -jar sparql-examples-utils.jar test --input-directory=examples -p tmp --also-run-slow-tests; then
+          echo "✅ Validation successful!"
+          echo "validation_result=success" >> $GITHUB_OUTPUT
+          exit 0
+        else
+          echo "❌ Validation failed!"
+          echo "validation_result=failed" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+
+    - name: Move validated file to target location
+      if: success()
+      run: |
+        TARGET_FILEPATH="${{ steps.create_turtle.outputs.target_filepath }}"
+        TURTLE_FILE="${{ steps.create_turtle.outputs.turtle_file }}"
+
+        # Ensure target directory exists
+        TARGET_DIR=$(dirname "examples/$TARGET_FILEPATH")
+        mkdir -p "$TARGET_DIR"
+
+        # Move the file to the target location
+        mv "$TURTLE_FILE" "examples/$TARGET_FILEPATH"
+
+        echo "Moved file to: examples/$TARGET_FILEPATH"
+
+    - name: Commit and push validated query
+      if: success()
+      run: |
+        TARGET_FILEPATH="${{ steps.create_turtle.outputs.target_filepath }}"
+
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add "examples/$TARGET_FILEPATH"
+        git commit -m "Add validated SPARQL query: $TARGET_FILEPATH (from issue #${{ github.event.issue.number }})"
+        git push
+
+    - name: Comment on successful validation
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const targetPath = '${{ steps.create_turtle.outputs.target_filepath }}';
+          const comment = `✅ **Query validation successful!**
+
+          Your SPARQL query has been validated and added to the repository at: \`examples/${targetPath}\`
+
+          The query is now available in the SPARQL examples collection. Thank you for your contribution!
+
+          This issue will be automatically closed.`;
+
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+          await github.rest.issues.update({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'closed'
+          });
+
+    - name: Comment on validation failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const comment = `❌ **Query validation failed**
+
+          Unfortunately, your SPARQL query did not pass validation. Please check the following:
+
+          1. **Syntax**: Ensure your SPARQL query syntax is correct
+          2. **Prefixes**: Make sure all prefixes used in the query are properly defined
+          3. **Endpoint compatibility**: Verify that your query is compatible with the selected endpoint
+
+          Please review the query and submit a new issue with the corrected version.
+
+          **Validation details:**
+          The validation was performed using the sparql-examples-utils tool. Common issues include:
+          - Missing or incorrect PREFIX declarations
+          - Syntax errors in the SPARQL query
+          - Use of features not supported by the target endpoint
+
+          This issue will be automatically closed. Feel free to open a new issue with the corrected query.`;
+
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+          await github.rest.issues.update({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'closed'
+          });
+
+    - name: Clean up temporary files
+      if: always()
+      run: |
+        rm -rf examples/tmp

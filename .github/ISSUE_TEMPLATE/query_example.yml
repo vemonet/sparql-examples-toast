@@ -1,0 +1,81 @@
+name: SPARQL Query Submission
+description: Form to submit SPARQL queries
+title: "[Query] Short description of the query"
+labels: ["add-example", ]
+
+body:
+  - type: textarea
+    id: sparql_query
+    attributes:
+      label: SPARQL query
+      description: Provide a working SPARQL query example that reflects what is described in English above
+      placeholder: "Add a working SPARQL query"
+
+  - type: textarea
+    id: natural_language_query
+    attributes:
+      label: Query description
+      description: Describe in natural language what the query does. What are you trying to achieve with it?
+      placeholder: "Describe your query here"
+
+  - type: input
+    id: filepath
+    attributes:
+      label: Query file path
+      description: Provide the desired file path for your query within the repository examples folder.
+      placeholder: "UniProt/001.ttl"
+
+  - type: checkboxes
+    id: predefined_sparql_endpoints
+    attributes:
+      label: Select the target SPARQL endpoint(s)
+      description: Choose one or more SPARQL endpoints from the list, or select 'Other' to provide your own.
+      options:
+        - label: "Wikidata SPARQL (https://query.wikidata.org/sparql)"
+        - label: "Wikimedia Commons (https://commons-query.wikimedia.org)"
+        - label: "DBpedia SPARQL (https://dbpedia.org/sparql)"
+        - label: "UniProt SPARQL (https://sparql.uniprot.org/sparql)"
+        - label: "Wikipathways SPARQL (https://sparql.wikipathways.org)"
+        - label: "Other (please specify below)"
+
+  - type: input
+    id: custom_sparql_endpoint
+    attributes:
+      label: Custom SPARQL Endpoint
+      description: If you selected 'Other' above, please provide the SPARQL endpoint URL here.
+      placeholder: "https://example.org/sparql"
+
+  - type: textarea
+    id: federated_services
+    attributes:
+      label: Federated Service IRIs
+      description: If your query uses SERVICE clauses to federate with other SPARQL endpoints, list their IRIs here (one per line).
+
+
+
+  # - type: dropdown
+  #   id: license
+  #   attributes:
+  #     label: License
+  #     description: Select a license for your query submission.
+  #     options:
+  #       - "MIT License"
+  #       - "Apache License 2.0"
+  #       - "GPL 3.0"
+  #       - "CC BY 4.0"
+  #       - "CC0"
+  #       - "Other (please specify below)"
+
+  # - type: input
+  #   id: custom_license
+  #   attributes:
+  #     label: Custom License
+  #     description: If you selected 'Other' above, please provide the license here.
+  #     placeholder: "Enter your custom license"
+
+  # - type: input
+  #   id: query_results_link
+  #   attributes:
+  #     label: Optional link to query results
+  #     description: Add a link to the query results (optional).
+  #     placeholder: "URL to the query results"
