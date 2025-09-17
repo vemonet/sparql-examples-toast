@@ -1,5 +1,7 @@
 name: Validate SPARQL Query from Issue
 
+# https://github.com/vemonet/sparql-examples-toast/blob/master/examples/UniProt/3_entry_sequences_organism.ttl
+
 permissions:
   issues: write
   contents: write

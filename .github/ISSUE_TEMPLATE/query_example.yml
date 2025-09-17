@@ -1,7 +1,7 @@
 name: SPARQL Query Submission
 description: Form to submit SPARQL queries
 title: "[Query] Short description of the query"
-labels: ["add-example", ]
+labels: ["add-example"]
 
 body:
   - type: textarea
