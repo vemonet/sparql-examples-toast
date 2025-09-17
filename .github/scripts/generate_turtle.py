@@ -41,34 +41,31 @@ def extract_selected_endpoint(text: str) -> str:
 
     return "https://sparql.uniprot.org/sparql/"
 
-def get_endpoint_namespace(filepath: str) -> str:
+def get_endpoint_namespace(target_dir: str) -> str:
     """Get the appropriate prefix by reading from the first .ttl file in the target folder"""
     import glob
 
-    # Extract the directory from filepath
-    if filepath:
-        target_dir = os.path.dirname(f"examples/{filepath}")
-        print(f"Target directory: {target_dir}")
-        # if target_dir.startswith("examples/"):
-        # Find the first .ttl file that is not prefixes.ttl
-        pattern = os.path.join(target_dir, "*.ttl")
-        ttl_files = glob.glob(pattern)
+    print(f"Target directory: {target_dir}")
+    # if target_dir.startswith("examples/"):
+    # Find the first .ttl file that is not prefixes.ttl
+    pattern = os.path.join(target_dir, "*.ttl")
+    ttl_files = glob.glob(pattern)
 
-        print(f"Found .ttl files: {ttl_files}")
+    print(f"Found .ttl files: {ttl_files}")
 
-        for ttl_file in sorted(ttl_files):
-            if not ttl_file.endswith("prefixes.ttl"):
-                try:
-                    with open(ttl_file, 'r') as f:
-                        first_line = f.readline().strip()
-                        # Extract namespace from @prefix ex: <namespace> .
-                        if first_line.startswith("@prefix ex:"):
-                            start = first_line.find('<') + 1
-                            end = first_line.find('>', start)
-                            if start > 0 and end > start:
-                                return first_line[start:end]
-                except (IOError, IndexError):
-                    continue
+    for ttl_file in sorted(ttl_files):
+        if not ttl_file.endswith("prefixes.ttl"):
+            try:
+                with open(ttl_file, 'r') as f:
+                    first_line = f.readline().strip()
+                    # Extract namespace from @prefix ex: <namespace> .
+                    if first_line.startswith("@prefix ex:"):
+                        start = first_line.find('<') + 1
+                        end = first_line.find('>', start)
+                        if start > 0 and end > start:
+                            return first_line[start:end]
+            except (IOError, IndexError):
+                continue
 
     # Fallback to default
     return "https://example.org/.well-known/sparql-examples/"
@@ -87,15 +84,21 @@ federated_services_str = extract_section(issue_body, "Federated Service IRIs")
 if not filepath:
     filepath = "tmp/query.ttl"
 
+target_dir = os.path.dirname(f"examples/{filepath}")
 query_id = os.path.splitext(os.path.basename(filepath))[0]
-endpoint_prefix = get_endpoint_namespace(filepath)
+endpoint_prefix = get_endpoint_namespace(target_dir)
 
 # Create tmp directory
 os.makedirs("examples/tmp", exist_ok=True)
+if os.path.exists(f"{target_dir}/prefixes.ttl"):
+    import shutil
+    shutil.copy(f"{target_dir}/prefixes.ttl", "examples/tmp/prefixes.ttl")
+
 turtle_file = f"examples/tmp/{query_id}.ttl"
 
 # Generate turtle content
 turtle_content = f"""@prefix ex: <{endpoint_prefix}> .
+@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <https://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
