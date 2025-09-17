@@ -47,25 +47,28 @@ def get_endpoint_namespace(filepath: str) -> str:
 
     # Extract the directory from filepath
     if filepath:
-        target_dir = os.path.dirname(filepath)
-        if target_dir.startswith("examples/"):
-            # Find the first .ttl file that is not prefixes.ttl
-            pattern = os.path.join(target_dir, "*.ttl")
-            ttl_files = glob.glob(pattern)
+        target_dir = os.path.dirname(f"examples/{filepath}")
+        print(f"Target directory: {target_dir}")
+        # if target_dir.startswith("examples/"):
+        # Find the first .ttl file that is not prefixes.ttl
+        pattern = os.path.join(target_dir, "*.ttl")
+        ttl_files = glob.glob(pattern)
 
-            for ttl_file in sorted(ttl_files):
-                if not ttl_file.endswith("prefixes.ttl"):
-                    try:
-                        with open(ttl_file, 'r') as f:
-                            first_line = f.readline().strip()
-                            # Extract namespace from @prefix ex: <namespace> .
-                            if first_line.startswith("@prefix ex:"):
-                                start = first_line.find('<') + 1
-                                end = first_line.find('>', start)
-                                if start > 0 and end > start:
-                                    return first_line[start:end]
-                    except (IOError, IndexError):
-                        continue
+        print(f"Found .ttl files: {ttl_files}")
+
+        for ttl_file in sorted(ttl_files):
+            if not ttl_file.endswith("prefixes.ttl"):
+                try:
+                    with open(ttl_file, 'r') as f:
+                        first_line = f.readline().strip()
+                        # Extract namespace from @prefix ex: <namespace> .
+                        if first_line.startswith("@prefix ex:"):
+                            start = first_line.find('<') + 1
+                            end = first_line.find('>', start)
+                            if start > 0 and end > start:
+                                return first_line[start:end]
+                except (IOError, IndexError):
+                    continue
 
     # Fallback to default
     return "https://example.org/.well-known/sparql-examples/"
@@ -78,7 +81,7 @@ sparql_query = extract_section(issue_body, "SPARQL query")
 description = extract_section(issue_body, "Query description")
 filepath = extract_section(issue_body, "Query file path")
 selected_endpoint = extract_selected_endpoint(issue_body)
-federated_services = extract_section(issue_body, "Federated Service IRIs")
+federated_services_str = extract_section(issue_body, "Federated Service IRIs")
 
 # Set defaults
 if not filepath:
@@ -96,21 +99,20 @@ turtle_content = f"""@prefix ex: <{endpoint_prefix}> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <https://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix spex:<https://purl.expasy.org/sparql-examples/ontology#> .
+@prefix spex: <https://purl.expasy.org/sparql-examples/ontology#> .
 
 ex:{query_id} a sh:SPARQLExecutable,
         sh:SPARQLSelectExecutable ;
-    rdfs:comment "{description}"@en ;
+    rdfs:comment "{description}"^^rdf:HTML ;
     sh:prefixes _:sparql_examples_prefixes ;
     sh:select \"\"\"{sparql_query}\"\"\" ;
-    schema:target <{selected_endpoint}> ."""
+    schema:target <{selected_endpoint}> """
 
 # Add federated services if present
-if federated_services:
-    for service in federated_services.split('\n'):
-        service = service.strip()
-        if service:
-            turtle_content += f"\n    spex:federatesWith <{service}> ."
+if "_No response_" in federated_services_str:
+    turtle_content += " ."
+else:
+    turtle_content += f" ;\n    spex:federatesWith <{'> <'.join(federated_services_str.split('\n'))}> ."
 
 # Write turtle file
 with open(turtle_file, 'w') as f:
