@@ -39,6 +39,11 @@ jobs:
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
+    - name: Show turtle file content
+      run: |
+        echo "Content of ${{ steps.create_turtle.outputs.turtle_file }}:"
+        cat "${{ steps.create_turtle.outputs.turtle_file }}"
+
     - name: Validate SPARQL query
       id: validate
       run: |
