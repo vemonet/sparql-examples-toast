@@ -6,6 +6,9 @@ permissions:
   issues: write
   contents: write
   pull-requests: write
+# NOTE: You will need to enable action to create PRs in your org and repo settings
+# Allow GitHub Actions to create and approve pull requests
+
 
 on:
   issues:
@@ -78,9 +81,9 @@ jobs:
           This PR was automatically created after successful validation and execution of the SPARQL query.
         branch: add-example-${{ github.event.issue.number }}
         delete-branch: true
-        # labels: |
-        #   add-example
-        #   automated-pr
+        labels: |
+          add-example
+          automated-pr
 
     - name: Comment on successful validation
       if: success()
