@@ -42,9 +42,9 @@ jobs:
 
     - name: Show turtle file content
       run: |
-        ls -alh examples/tmp
-        echo "Content of ${{ steps.create_turtle.outputs.turtle_file }}:"
-        cat "${{ steps.create_turtle.outputs.turtle_file }}"
+        ls -alh examples
+      # echo "Content of ${{ steps.create_turtle.outputs.turtle_file }}:"
+      # cat "${{ steps.create_turtle.outputs.turtle_file }}"
 
     - name: Validate SPARQL query
       id: validate
