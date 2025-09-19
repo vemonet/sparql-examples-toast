@@ -5,6 +5,7 @@ name: Validate SPARQL Query from Issue
 permissions:
   issues: write
   contents: write
+  pull-requests: write
 
 on:
   issues:
@@ -30,12 +31,12 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Download SPARQL examples utils
-      run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.20/sparql-examples-utils-2.0.20-uber.jar" -O sparql-examples-utils.jar
+    # - name: Download SPARQL examples utils
+    #   run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.20/sparql-examples-utils-2.0.20-uber.jar" -O sparql-examples-utils.jar
 
     - name: Parse issue and create turtle file
       id: create_turtle
-      run: python3 .github/scripts/generate_turtle.py
+      run: java -jar sparql-examples-utils.jar import-github-issue -i ./examples
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
@@ -50,41 +51,36 @@ jobs:
       run: |
         echo "Running validation on examples/tmp directory..."
         # Run validation only on the tmp directory
-        if java -jar sparql-examples-utils.jar test --input-directory=examples -p tmp --also-run-slow-tests; then
+        if java -jar sparql-examples-utils.jar test -i ./examples -p tmp --also-run-slow-tests; then
           echo "✅ Validation successful!"
-          echo "validation_result=success" >> $GITHUB_OUTPUT
           exit 0
         else
           echo "❌ Validation failed!"
-          echo "validation_result=failed" >> $GITHUB_OUTPUT
           exit 1
         fi
 
-    - name: Move validated file to target location
+    - name: Create pull request with validated query
       if: success()
-      run: |
-        TARGET_FILEPATH="${{ steps.create_turtle.outputs.target_filepath }}"
-        TURTLE_FILE="${{ steps.create_turtle.outputs.turtle_file }}"
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Add SPARQL query example: ${{ steps.create_turtle.outputs.target_filepath }} (from issue #${{ github.event.issue.number }})"
+        title: "Add example: ${{ steps.create_turtle.outputs.target_filepath }}"
+        body: |
+          ## 🔍 SPARQL Query Addition
 
-        # Ensure target directory exists
-        TARGET_DIR=$(dirname "examples/$TARGET_FILEPATH")
-        mkdir -p "$TARGET_DIR"
+          This PR adds a validated SPARQL query from issue #${{ github.event.issue.number }}.
 
-        # Move the file to the target location
-        mv "$TURTLE_FILE" "examples/$TARGET_FILEPATH"
+          **File added:** `examples/${{ steps.create_turtle.outputs.target_filepath }}`
 
-        echo "Moved file to: examples/$TARGET_FILEPATH"
+          **Related issue:** Closes #${{ github.event.issue.number }}
 
-    - name: Commit and push validated query
-      if: success()
-      run: |
-        TARGET_FILEPATH="${{ steps.create_turtle.outputs.target_filepath }}"
-
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add "examples/$TARGET_FILEPATH"
-        git commit -m "Add validated SPARQL query: $TARGET_FILEPATH (from issue #${{ github.event.issue.number }})"
-        git push
+          This PR was automatically created after successful validation and execution of the SPARQL query.
+        branch: add-example-${{ github.event.issue.number }}
+        delete-branch: true
+        labels: |
+          add-example
+          automated-pr
 
     - name: Comment on successful validation
       if: success()
@@ -92,26 +88,22 @@ jobs:
       with:
         script: |
           const targetPath = '${{ steps.create_turtle.outputs.target_filepath }}';
+          const issueNumber = context.issue.number;
           const comment = `✅ **Query validation successful!**
 
-          Your SPARQL query has been validated and added to the repository at: \`examples/${targetPath}\`
+          Your SPARQL query has been validated and a pull request has been created for review.
 
-          The query is now available in the SPARQL examples collection. Thank you for your contribution!
+          **📁 File location:** \`examples/${targetPath}\`
 
-          This issue will be automatically closed.`;
+          The query will be added to the SPARQL examples collection once the pull request is reviewed and merged.
+
+          Thank you for your contribution!`;
 
           await github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: comment
-          });
-
-          await github.rest.issues.update({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            state: 'closed'
           });
 
     - name: Comment on validation failure
@@ -127,28 +119,19 @@ jobs:
           2. **Prefixes**: Make sure all prefixes used in the query are properly defined
           3. **Endpoint compatibility**: Verify that your query is compatible with the selected endpoint
 
-          Please review the query and submit a new issue with the corrected version.
-
           **Validation details:**
           The validation was performed using the sparql-examples-utils tool. Common issues include:
           - Missing or incorrect PREFIX declarations
           - Syntax errors in the SPARQL query
           - Use of features not supported by the target endpoint
 
-          This issue will be automatically closed. Feel free to open a new issue with the corrected query.`;
+          Please fix the issues and update your query in this issue, or create a new issue with the corrected version. The validation will run again automatically.`;
 
           await github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: comment
-          });
-
-          await github.rest.issues.update({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            state: 'closed'
           });
 
     - name: Clean up temporary files

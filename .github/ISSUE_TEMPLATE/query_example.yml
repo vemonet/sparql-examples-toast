@@ -1,6 +1,6 @@
-name: SPARQL Query Submission
-description: Form to submit SPARQL queries
-title: "[Query] Short description of the query"
+name: Add SPARQL query example
+description: Form to submit a SPARQL query example
+title: "Add example"
 labels: ["add-example"]
 
 body:
@@ -17,7 +17,7 @@ body:
     id: natural_language_query
     attributes:
       label: Query description
-      description: Describe in natural language what the query does. What are you trying to achieve with it?
+      description: Describe in natural language what the query does. What are you trying to achieve with it? You can use HTML formatting (do not use markdown here).
       placeholder: "Describe your query here"
     validations:
       required: true
@@ -37,47 +37,24 @@ body:
       label: Select the target SPARQL endpoint(s)
       description: Choose one or more SPARQL endpoints from the list, or select 'Other' to provide your own.
       options:
-        - label: "Wikidata SPARQL (https://query.wikidata.org/sparql)"
-        - label: "Wikimedia Commons (https://commons-query.wikimedia.org)"
-        - label: "DBpedia SPARQL (https://dbpedia.org/sparql)"
-        - label: "UniProt SPARQL (https://sparql.uniprot.org/sparql)"
-        - label: "Wikipathways SPARQL (https://sparql.wikipathways.org)"
-        - label: "Other (please specify below)"
-
-  - type: input
-    id: custom_sparql_endpoint
-    attributes:
-      label: Custom SPARQL Endpoint
-      description: If you selected 'Other' above, please provide the SPARQL endpoint URL here.
-      placeholder: "https://example.org/sparql"
+        - label: "https://query.wikidata.org/sparql"
+        - label: "https://commons-query.wikimedia.org"
+        - label: "https://dbpedia.org/sparql"
+        - label: "https://sparql.uniprot.org/sparql"
+        - label: "https://sparql.wikipathways.org"
 
   - type: textarea
-    id: federated_services
+    id: custom_sparql_endpoint
     attributes:
-      label: Federated Service IRIs
-      description: If your query uses SERVICE clauses to federate with other SPARQL endpoints, list their IRIs here (one per line).
+      label: Custom SPARQL Endpoints
+      description: Please provide the SPARQL endpoints URL here (one per line).
+      # placeholder: "https://example.org/sparql"
 
-
-
-  # - type: dropdown
-  #   id: license
-  #   attributes:
-  #     label: License
-  #     description: Select a license for your query submission.
-  #     options:
-  #       - "MIT License"
-  #       - "Apache License 2.0"
-  #       - "GPL 3.0"
-  #       - "CC BY 4.0"
-  #       - "CC0"
-  #       - "Other (please specify below)"
-
-  # - type: input
-  #   id: custom_license
-  #   attributes:
-  #     label: Custom License
-  #     description: If you selected 'Other' above, please provide the license here.
-  #     placeholder: "Enter your custom license"
+  - type: textarea
+    id: keywords
+    attributes:
+      label: Keywords
+      description: List keywords relevant to the query (one per line).
 
   # - type: input
   #   id: query_results_link
