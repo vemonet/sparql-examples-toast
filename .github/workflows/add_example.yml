@@ -78,9 +78,9 @@ jobs:
           This PR was automatically created after successful validation and execution of the SPARQL query.
         branch: add-example-${{ github.event.issue.number }}
         delete-branch: true
-        labels: |
-          add-example
-          automated-pr
+        # labels: |
+        #   add-example
+        #   automated-pr
 
     - name: Comment on successful validation
       if: success()
