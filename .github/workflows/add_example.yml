@@ -90,8 +90,6 @@ jobs:
 
           Your SPARQL query has been validated and a pull request has been created for review.
 
-          **📁 File location:** \`examples/${targetPath}\`
-
           The query will be added to the SPARQL examples collection once the pull request is reviewed and merged.
 
           Thank you for your contribution!`;
