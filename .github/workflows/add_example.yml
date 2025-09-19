@@ -1,21 +1,17 @@
-name: Validate SPARQL Query from Issue
-
-# https://github.com/vemonet/sparql-examples-toast/blob/master/examples/UniProt/3_entry_sequences_organism.ttl
+name: Add SPARQL query example
+on:
+  issues:
+    types: [opened]
 
 permissions:
   issues: write
   contents: write
   pull-requests: write
 # NOTE: You will need to enable action to create PRs in your org and repo settings
-# Allow GitHub Actions to create and approve pull requests
-
-
-on:
-  issues:
-    types: [opened]
+# "Allow GitHub Actions to create and approve pull requests"
 
 jobs:
-  validate_query:
+  add_example:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'add-example')
 
@@ -35,7 +31,7 @@ jobs:
         python-version: '3.x'
 
     # - name: Download SPARQL examples utils
-    #   run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.20/sparql-examples-utils-2.0.20-uber.jar" -O sparql-examples-utils.jar
+    #   run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.21/sparql-examples-utils-2.0.21-uber.jar" -O sparql-examples-utils.jar
 
     - name: Parse issue and create turtle file
       id: create_turtle
@@ -43,11 +39,6 @@ jobs:
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
-    - name: Show turtle file content
-      run: |
-        ls -alh examples
-      # echo "Content of ${{ steps.create_turtle.outputs.turtle_file }}:"
-      # cat "${{ steps.create_turtle.outputs.turtle_file }}"
 
     - name: Validate SPARQL query
       id: validate
@@ -62,23 +53,26 @@ jobs:
           exit 1
         fi
 
+    - name: Clean up temporary files
+      if: success()
+      run: |
+        rm -rf examples/tmp
+
     - name: Create pull request with validated query
       if: success()
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: "Add SPARQL query example: ${{ steps.create_turtle.outputs.target_filepath }} (from issue #${{ github.event.issue.number }})"
         title: "Add example: ${{ steps.create_turtle.outputs.target_filepath }}"
         body: |
-          ## 🔍 SPARQL Query Addition
+          ## Adding SPARQL Query
 
-          This PR adds a validated SPARQL query from issue #${{ github.event.issue.number }}.
-
-          **File added:** `examples/${{ steps.create_turtle.outputs.target_filepath }}`
-
-          **Related issue:** Closes #${{ github.event.issue.number }}
+          This PR adds a validated SPARQL query `examples/${{ steps.create_turtle.outputs.target_filepath }}` submitted in issue #${{ github.event.issue.number }}.
 
           This PR was automatically created after successful validation and execution of the SPARQL query.
+
+          Closes #${{ github.event.issue.number }}
         branch: add-example-${{ github.event.issue.number }}
         delete-branch: true
         labels: |
@@ -87,7 +81,7 @@ jobs:
 
     - name: Comment on successful validation
       if: success()
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           const targetPath = '${{ steps.create_turtle.outputs.target_filepath }}';
@@ -109,9 +103,9 @@ jobs:
             body: comment
           });
 
-    - name: Comment on validation failure
+    - name: Comment on validation failure and close issue
       if: failure()
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           const comment = `❌ **Query validation failed**
@@ -128,7 +122,9 @@ jobs:
           - Syntax errors in the SPARQL query
           - Use of features not supported by the target endpoint
 
-          Please fix the issues and update your query in this issue, or create a new issue with the corrected version. The validation will run again automatically.`;
+          Please fix the query, and create a new issue with the corrected version. The validation will run again automatically.
+
+          This issue will be closed automatically. Please create a new issue with the corrected query.`;
 
           await github.rest.issues.createComment({
             issue_number: context.issue.number,
@@ -137,7 +133,9 @@ jobs:
             body: comment
           });
 
-    - name: Clean up temporary files
-      if: always()
-      run: |
-        rm -rf examples/tmp
+          await github.rest.issues.update({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'closed'
+          });
