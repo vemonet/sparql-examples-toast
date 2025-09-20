@@ -30,22 +30,39 @@ jobs:
       with:
         python-version: '3.x'
 
-    # - name: Download SPARQL examples utils
-    #   run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.21/sparql-examples-utils-2.0.21-uber.jar" -O sparql-examples-utils.jar
+    - name: Download SPARQL examples utils
+      run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.21/sparql-examples-utils-2.0.21-uber.jar" -O sparql-examples-utils.jar
 
     - name: Parse issue and create turtle file
-      id: create_turtle
-      run: java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp
+      id: create_ttl
+      continue-on-error: true
+      run: |
+        output=$(java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> create_ttl_error.log)
+        exit_code=$?
+        if [ $exit_code -ne 0 ]; then
+          error_log=$(cat create_ttl_error.log)
+          echo "error_message<<EOF" >> $GITHUB_OUTPUT
+          echo "$error_log" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+        echo "$output" >> $GITHUB_OUTPUT
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
 
     - name: Validate SPARQL query
       id: validate
+      continue-on-error: true
       run: |
         echo "Running validation on examples/tmp directory..."
         # Run validation only on the tmp directory
-        if java -jar sparql-examples-utils.jar test -i ./examples -p tmp --also-run-slow-tests; then
+        output=$(java -jar sparql-examples-utils.jar test -i ./examples -p tmp --also-run-slow-tests 2>&1)
+        exit_code=$?
+        echo "validation_output<<EOF" >> $GITHUB_OUTPUT
+        echo "$output" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        if [ $exit_code -eq 0 ]; then
           echo "✅ Validation successful!"
           exit 0
         else
@@ -63,12 +80,14 @@ jobs:
       uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: "Add SPARQL query example: ${{ steps.create_turtle.outputs.target_filepath }} (from issue #${{ github.event.issue.number }})"
-        title: "Add example: ${{ steps.create_turtle.outputs.target_filepath }}"
+        commit-message: "Add SPARQL query example: ${{ steps.create_ttl.outputs.output_file }} (from issue #${{ github.event.issue.number }})"
+        title: "Add example: ${{ steps.create_ttl.outputs.output_file }}"
         body: |
           ## Adding SPARQL Query
 
-          This PR adds a validated SPARQL query `examples/${{ steps.create_turtle.outputs.target_filepath }}` submitted in issue #${{ github.event.issue.number }}.
+          This PR adds a validated SPARQL query `examples/${{ steps.create_ttl.outputs.output_file }}` submitted in issue #${{ github.event.issue.number }}.
+
+          > ${{ steps.create_ttl.outputs.query_description }}
 
           This PR was automatically created after successful validation and execution of the SPARQL query.
 
@@ -84,7 +103,7 @@ jobs:
       uses: actions/github-script@v8
       with:
         script: |
-          const targetPath = '${{ steps.create_turtle.outputs.target_filepath }}';
+          const targetPath = '${{ steps.create_ttl.outputs.output_file }}';
           const issueNumber = context.issue.number;
           const comment = `✅ **Query validation successful!**
 
@@ -106,6 +125,14 @@ jobs:
       uses: actions/github-script@v8
       with:
         script: |
+          let errorMessage = '';
+          if ('${{ steps.create_ttl.outputs.error_message }}') {
+            errorMessage += `**Error during file creation:**\n\`\`\`\n${{ steps.create_ttl.outputs.error_message }}\n\`\`\`\n\n`;
+          }
+          if ('${{ steps.validate.outputs.validation_output }}') {
+            errorMessage += `**Validation output:**\n\`\`\`\n${{ steps.validate.outputs.validation_output }}\n\`\`\`\n\n`;
+          }
+
           const comment = `❌ **Query validation failed**
 
           Unfortunately, your SPARQL query did not pass validation. Please check the following:
@@ -115,10 +142,10 @@ jobs:
           3. **Endpoint compatibility**: Verify that your query is compatible with the selected endpoint
 
           **Validation details:**
-          The validation was performed using the sparql-examples-utils tool. Common issues include:
-          - Missing or incorrect PREFIX declarations
-          - Syntax errors in the SPARQL query
-          - Use of features not supported by the target endpoint
+
+          ```
+          ${errorMessage}
+          ```
 
           Please fix the query, and create a new issue with the corrected version. The validation will run again automatically.
 
