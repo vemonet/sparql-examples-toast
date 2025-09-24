@@ -35,7 +35,6 @@ jobs:
 
     - name: Parse issue and create turtle file
       id: create_ttl
-      continue-on-error: true
       run: |
         GITHUB_OUTPUT=$(java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> error.log)
       env:
@@ -44,7 +43,6 @@ jobs:
 
     - name: Validate SPARQL query
       id: validate
-      continue-on-error: true
       if: success()
       run: |
         java -jar sparql-examples-utils.jar test -i ./examples -p tmp --also-run-slow-tests 2> error.log
