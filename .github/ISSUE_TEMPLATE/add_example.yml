@@ -10,7 +10,7 @@ body:
       label: SPARQL query
       description: Provide a working SPARQL query example that reflects what is described in English above
       placeholder: "Add a working SPARQL query"
-      render: sparql
+      # render: sparql
     validations:
       required: true
 
@@ -36,13 +36,17 @@ body:
     id: predefined_sparql_endpoints
     attributes:
       label: Select the target SPARQL endpoint(s)
-      description: Choose one or more SPARQL endpoints from the list, or select 'Other' to provide your own.
+      description: Choose one or more SPARQL endpoints from the list, and/or use the custom field below.
       options:
-        - label: "https://query.wikidata.org/sparql"
-        - label: "https://commons-query.wikimedia.org"
-        - label: "https://dbpedia.org/sparql"
         - label: "https://sparql.uniprot.org/sparql"
-        - label: "https://sparql.wikipathways.org"
+        - label: "https://www.bgee.org/sparql/"
+        - label: "https://sparql.omabrowser.org/sparql/"
+        - label: "https://sparql.rhea-db.org/sparql/"
+        - label: "https://sparql.cellosaurus.org/sparql"
+        - label: "https://kg.earthmetabolome.org/metrin/api/"
+        - label: "https://sparql.orthodb.org/sparql/"
+        - label: "https://rdf.metanetx.org/sparql/"
+        - label: "https://hamap.expasy.org/sparql/"
 
   - type: textarea
     id: custom_sparql_endpoint
