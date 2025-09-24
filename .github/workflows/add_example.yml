@@ -14,6 +14,7 @@ jobs:
   add_example:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'add-example')
+    continue-on-error: true
 
     steps:
     - name: Check out repository
@@ -35,44 +36,23 @@ jobs:
 
     - name: Parse issue and create turtle file
       id: create_ttl
-      continue-on-error: true
       run: |
-        output=$(java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> create_ttl_error.log)
-        exit_code=$?
-        if [ $exit_code -ne 0 ]; then
-          error_log=$(cat create_ttl_error.log)
-          echo "error_message<<EOF" >> $GITHUB_OUTPUT
-          echo "$error_log" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          exit 1
-        fi
-        echo "$output" >> $GITHUB_OUTPUT
+        GITHUB_OUTPUT=$(java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> error.log)
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
 
     - name: Validate SPARQL query
       id: validate
-      continue-on-error: true
+      if: success()
       run: |
-        echo "Running validation on examples/tmp directory..."
-        # Run validation only on the tmp directory
-        output=$(java -jar sparql-examples-utils.jar test -i ./examples -p tmp --also-run-slow-tests 2>&1)
-        exit_code=$?
-        echo "validation_output<<EOF" >> $GITHUB_OUTPUT
-        echo "$output" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-        if [ $exit_code -eq 0 ]; then
-          echo "✅ Validation successful!"
-          exit 0
-        else
-          echo "❌ Validation failed!"
-          exit 1
-        fi
+        java -jar sparql-examples-utils.jar test -i ./examples -p tmp --also-run-slow-tests 2> error.log
+
 
     - name: Clean up temporary files
       if: success()
       run: |
+        echo $GITHUB_OUTPUT
         rm -rf examples/tmp
 
     - name: Create pull request with validated query
@@ -125,12 +105,16 @@ jobs:
       uses: actions/github-script@v8
       with:
         script: |
+          const fs = require('fs');
           let errorMessage = '';
-          if ('${{ steps.create_ttl.outputs.error_message }}') {
-            errorMessage += `**Error during file creation:**\n\`\`\`\n${{ steps.create_ttl.outputs.error_message }}\n\`\`\`\n\n`;
-          }
-          if ('${{ steps.validate.outputs.validation_output }}') {
-            errorMessage += `**Validation output:**\n\`\`\`\n${{ steps.validate.outputs.validation_output }}\n\`\`\`\n\n`;
+
+          try {
+            const errorLog = fs.readFileSync('error.log', 'utf8');
+            if (errorLog.trim()) {
+              errorMessage = errorLog.trim();
+            }
+          } catch (e) {
+            errorMessage = 'No error details available';
           }
 
           const comment = `❌ **Query validation failed**
