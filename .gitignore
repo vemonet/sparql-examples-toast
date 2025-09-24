@@ -7,5 +7,5 @@
 .project
 .classpath
 .settings/
-# *.jar
+*.jar
 __pycache__/

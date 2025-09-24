@@ -10,6 +10,7 @@ body:
       label: SPARQL query
       description: Provide a working SPARQL query example that reflects what is described in English above
       placeholder: "Add a working SPARQL query"
+      render: sparql
     validations:
       required: true
 
