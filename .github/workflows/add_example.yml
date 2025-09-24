@@ -31,7 +31,8 @@ jobs:
         python-version: '3.x'
 
     - name: Download SPARQL examples utils
-      run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.22/sparql-examples-utils-2.0.22-uber.jar" -O sparql-examples-utils.jar
+      run: wget https://github.com/vemonet/sparql-examples-utils/releases/download/0.0.1/sparql-examples-utils-2.0.23-SNAPSHOT-uber.jar -O sparql-examples-utils.jar
+      # run: wget "https://github.com/sib-swiss/sparql-examples-utils/releases/download/v2.0.22/sparql-examples-utils-2.0.22-uber.jar" -O sparql-examples-utils.jar
 
     - name: Parse issue and create turtle file
       id: create_ttl
@@ -51,7 +52,7 @@ jobs:
     - name: Clean up temporary files
       if: success()
       run: |
-        echo $GITHUB_OUTPUT
+        echo ${GITHUB_OUTPUT}
         rm -rf examples/tmp
 
     - name: Create pull request with validated query
@@ -106,7 +107,6 @@ jobs:
         script: |
           const fs = require('fs');
           let errorMessage = '';
-
           try {
             const errorLog = fs.readFileSync('error.log', 'utf8');
             if (errorLog.trim()) {
@@ -115,7 +115,6 @@ jobs:
           } catch (e) {
             errorMessage = 'No error details available';
           }
-
           const comment = `❌ **Query validation failed**
 
           Unfortunately, your SPARQL query did not pass validation. Please check the following:
