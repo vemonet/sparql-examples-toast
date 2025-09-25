@@ -37,7 +37,7 @@ jobs:
     - name: Parse issue and create turtle file
       id: create_ttl
       run: |
-        echo $(java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> error.log) >> $GITHUB_OUTPUT
+        java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> error.log >> $GITHUB_OUTPUT
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
