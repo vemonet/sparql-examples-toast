@@ -1,0 +1,222 @@
+main 25-09-25 15:11:46 +0000 org.apache.http.client.protocol.RequestAddCookies
+  DEBUG: CookieSpec selected: standard
+main 25-09-25 15:11:46 +0000 org.apache.http.client.protocol.RequestAuthCache
+  DEBUG: Auth cache not set in the context
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.conn.PoolingHttpClientConnectionManager
+  DEBUG: Connection request: [route: {s}->https://sparql.uniprot.org:443][total available: 0; route allocated: 0 of 5; total allocated: 0 of 10]
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.conn.PoolingHttpClientConnectionManager
+  DEBUG: Connection leased: [id: 0][route: {s}->https://sparql.uniprot.org:443][total available: 0; route allocated: 1 of 5; total allocated: 1 of 10]
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.execchain.MainClientExec
+  DEBUG: Opening connection {s}->https://sparql.uniprot.org:443
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.conn.DefaultHttpClientConnectionOperator
+  DEBUG: Connecting to sparql.uniprot.org/192.33.215.78:443
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG: Connecting socket to sparql.uniprot.org/192.33.215.78:443 with timeout 0
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG: Enabled protocols: [TLSv1.3, TLSv1.2]
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG: Enabled cipher suites:[TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_DHE_DSS_WITH_AES_256_GCM_SHA384, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSV]
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG: Starting handshake
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG: Secure session established
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG:  negotiated protocol: TLSv1.3
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG:  negotiated cipher suite: TLS_AES_256_GCM_SHA384
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG:  peer principal: CN=*.uniprot.org
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG:  peer alternative names: [*.uniprot.org, uniprot.org]
+main 25-09-25 15:11:46 +0000 org.apache.http.conn.ssl.SSLConnectionSocketFactory
+  DEBUG:  issuer principal: CN=Go Daddy Secure Certificate Authority - G2, OU=http://certs.godaddy.com/repository/, O="GoDaddy.com, Inc.", L=Scottsdale, ST=Arizona, C=US
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.conn.DefaultHttpClientConnectionOperator
+  DEBUG: Connection established 10.1.0.43:46672<->192.33.215.78:443
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.conn.DefaultManagedHttpClientConnection
+  DEBUG: http-outgoing-0: set socket timeout to 2700000
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.execchain.MainClientExec
+  DEBUG: Executing request GET /sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2F%3E%0APREFIX+pq%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fqualifier%2F%3E%0APREFIX+ps%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fstatement%2F%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0APREFIX+uniprotkb%3A+%3Chttp%3A%2F%2Fpurl.uniprot.org%2Funiprot%2F%3E%0APREFIX+wdt%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2F%3E%0ASELECT++%3Fprotein+%3Fbegin+%3Fend+%3Fchromosome+%3Fassembly%0AWHERE+%7B%0A++++%7B%0A++++++++BIND%28uniprotkb%3AP05067+AS+%3FproteinIRI%29%0A++++++++BIND+%28SUBSTR%28STR%28%3FproteinIRI%29%2C+STRLEN%28STR%28uniprotkb%3A%29%29%2B1%29+AS+%3Fprotein%29%0A++++%7D%0A++++SERVICE+%3Chttps%3A%2F%2Fquery.wikidata.org%2Fsparql%3E+%7B%0A++++++++%3Fwp+wdt%3AP352+%3Fprotein+%3B%0A++++++++++++wdt%3AP702+%3Fwg+.+%0A++++++++%3Fwg+p%3AP644+++%3Fwgss+.%0A++++++++%3Fwgss+ps%3AP644++++++++%3Fbegin+%3B%0A++++++++++pq%3AP1057%2Fwdt%3AP1813+%3Fchromosome+%3B%0A++++++++++pq%3AP659%2Frdfs%3Alabel+%3Fassembly+.%0A++++++++%3Fwg+p%3AP645+%3Fwgse+.%0A++++++++%3Fwgse+ps%3AP645++++++++%3Fend+%3B%0A++++++++++pq%3AP1057%2Fwdt%3AP1813+%3Fchromosome+%3B%0A++++++++++pq%3AP659%2Frdfs%3Alabel+%3Fassembly+.%0A++++++++FILTER%28lang%28%3Fassembly%29+%3D+%22en%22%29%0A++%7D+%0A%7D+LIMIT+1 HTTP/1.1
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.execchain.MainClientExec
+  DEBUG: Target auth state: UNCHALLENGED
+main 25-09-25 15:11:46 +0000 org.apache.http.impl.execchain.MainClientExec
+  DEBUG: Proxy auth state: UNCHALLENGED
+main 25-09-25 15:11:46 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 >> GET /sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2F%3E%0APREFIX+pq%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fqualifier%2F%3E%0APREFIX+ps%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fstatement%2F%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0APREFIX+uniprotkb%3A+%3Chttp%3A%2F%2Fpurl.uniprot.org%2Funiprot%2F%3E%0APREFIX+wdt%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2F%3E%0ASELECT++%3Fprotein+%3Fbegin+%3Fend+%3Fchromosome+%3Fassembly%0AWHERE+%7B%0A++++%7B%0A++++++++BIND%28uniprotkb%3AP05067+AS+%3FproteinIRI%29%0A++++++++BIND+%28SUBSTR%28STR%28%3FproteinIRI%29%2C+STRLEN%28STR%28uniprotkb%3A%29%29%2B1%29+AS+%3Fprotein%29%0A++++%7D%0A++++SERVICE+%3Chttps%3A%2F%2Fquery.wikidata.org%2Fsparql%3E+%7B%0A++++++++%3Fwp+wdt%3AP352+%3Fprotein+%3B%0A++++++++++++wdt%3AP702+%3Fwg+.+%0A++++++++%3Fwg+p%3AP644+++%3Fwgss+.%0A++++++++%3Fwgss+ps%3AP644++++++++%3Fbegin+%3B%0A++++++++++pq%3AP1057%2Fwdt%3AP1813+%3Fchromosome+%3B%0A++++++++++pq%3AP659%2Frdfs%3Alabel+%3Fassembly+.%0A++++++++%3Fwg+p%3AP645+%3Fwgse+.%0A++++++++%3Fwgse+ps%3AP645++++++++%3Fend+%3B%0A++++++++++pq%3AP1057%2Fwdt%3AP1813+%3Fchromosome+%3B%0A++++++++++pq%3AP659%2Frdfs%3Alabel+%3Fassembly+.%0A++++++++FILTER%28lang%28%3Fassembly%29+%3D+%22en%22%29%0A++%7D+%0A%7D+LIMIT+1 HTTP/1.1
+main 25-09-25 15:11:46 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 >> Accept: application/sparql-results+xml, application/xml, application/x-sparqlstar-results+xml;q=0.8, application/x-binary-rdf-results-table;q=0.8
+main 25-09-25 15:11:46 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 >> Host: sparql.uniprot.org
+main 25-09-25 15:11:46 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 >> Connection: Keep-Alive
+main 25-09-25 15:11:46 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 >> User-Agent: Apache-HttpClient/4.5.14 (Java 1.5 minimum; Java/21.0.8)
+main 25-09-25 15:11:46 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 >> Accept-Encoding: gzip,deflate
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "GET /sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2F%3E%0APREFIX+pq%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fqualifier%2F%3E%0APREFIX+ps%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fstatement%2F%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0APREFIX+uniprotkb%3A+%3Chttp%3A%2F%2Fpurl.uniprot.org%2Funiprot%2F%3E%0APREFIX+wdt%3A+%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2F%3E%0ASELECT++%3Fprotein+%3Fbegin+%3Fend+%3Fchromosome+%3Fassembly%0AWHERE+%7B%0A++++%7B%0A++++++++BIND%28uniprotkb%3AP05067+AS+%3FproteinIRI%29%0A++++++++BIND+%28SUBSTR%28STR%28%3FproteinIRI%29%2C+STRLEN%28STR%28uniprotkb%3A%29%29%2B1%29+AS+%3Fprotein%29%0A++++%7D%0A++++SERVICE+%3Chttps%3A%2F%2Fquery.wikidata.org%2Fsparql%3E+%7B%0A++++++++%3Fwp+wdt%3AP352+%3Fprotein+%3B%0A++++++++++++wdt%3AP702+%3Fwg+.+%0A++++++++%3Fwg+p%3AP644+++%3Fwgss+.%0A++++++++%3Fwgss+ps%3AP644++++++++%3Fbegin+%3B%0A++++++++++pq%3AP1057%2Fwdt%3AP1813+%3Fchromosome+%3B%0A++++++++++pq%3AP659%2Frdfs%3Alabel+%3Fassembly+.%0A++++++++%3Fwg+p%3AP645+%3Fwgse+.%0A++++++++%3Fwgse+ps%3AP645++++++++%3Fend+%3B%0A++++++++++pq%3AP1057%2Fwdt%3AP1813+%3Fchromosome+%3B%0A++++++++++pq%3AP659%2Frdfs%3Alabel+%3Fassembly+.%0A++++++++FILTER%28lang%28%3Fassembly%29+%3D+%22en%22%29%0A++%7D+%0A%7D+LIMIT+1 HTTP/1.1[\r][\n]"
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "Accept: application/sparql-results+xml, application/xml, application/x-sparqlstar-results+xml;q=0.8, application/x-binary-rdf-results-table;q=0.8[\r][\n]"
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "Host: sparql.uniprot.org[\r][\n]"
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "Connection: Keep-Alive[\r][\n]"
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "User-Agent: Apache-HttpClient/4.5.14 (Java 1.5 minimum; Java/21.0.8)[\r][\n]"
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+main 25-09-25 15:11:46 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 >> "[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "HTTP/1.1 200 [\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Date: Thu, 25 Sep 2025 15:11:47 GMT[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Server: Apache[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Strict-Transport-Security: max-age=31536001; includeSubDomains[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Access-Control-Allow-Origin: *[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Access-Control-Allow-Headers: origin, x-requested-with, content-type, X-Release, queryid[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Access-Control-Expose-Headers: X-Total-Results, X-Release, queryid, content-type, user-agent, cache-control, etag, range[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "X-Release: 2025_03[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "X-Frame-Options: SAMEORIGIN[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "X-Content-Type-Options: nosniff[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Vary: Negotiate,Accept,Accept-Encoding,Content-Type[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Cache-Control: public[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "ETag: W/"2025_032025-09-25"[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Expires: Fri, 26 Sep 2025 15:11:47 GMT[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "queryid: 13275113939[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Content-Disposition: attachment; filename="sparql-E6DEB152182F615098A5E0C5E9AD74C7.srx"[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Content-Type: application/sparql-results+xml[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Content-Length: 713[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "X-Powered-By: sib.swiss[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Keep-Alive: timeout=5, max=100[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "Connection: Keep-Alive[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[\r][\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "<?xml version='1.0' encoding='UTF-8'?>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "<sparql xmlns='http://www.w3.org/2005/sparql-results#'>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9]<head>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]<variable name='protein'/>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]<variable name='begin'/>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]<variable name='end'/>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]<variable name='chromosome'/>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]<variable name='assembly'/>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9]</head>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9]<results>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]<result>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]<binding name='protein'>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9][0x9]<literal>P05067</literal>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]</binding>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]<binding name='begin'>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9][0x9]<literal>25880550</literal>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]</binding>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]<binding name='end'>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9][0x9]<literal>26171128</literal>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]</binding>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]<binding name='chromosome'>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9][0x9]<literal xml:lang='en'>21</literal>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]</binding>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]<binding name='assembly'>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9][0x9]<literal xml:lang='en'>genome assembly GRCh38</literal>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9][0x9]</binding>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9][0x9]</result>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "[0x9]</results>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.wire
+  DEBUG: http-outgoing-0 << "</sparql>[\n]"
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << HTTP/1.1 200 
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Date: Thu, 25 Sep 2025 15:11:47 GMT
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Server: Apache
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Strict-Transport-Security: max-age=31536001; includeSubDomains
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Access-Control-Allow-Origin: *
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Access-Control-Allow-Headers: origin, x-requested-with, content-type, X-Release, queryid
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Access-Control-Expose-Headers: X-Total-Results, X-Release, queryid, content-type, user-agent, cache-control, etag, range
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << X-Release: 2025_03
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << X-Frame-Options: SAMEORIGIN
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << X-Content-Type-Options: nosniff
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Vary: Negotiate,Accept,Accept-Encoding,Content-Type
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Cache-Control: public
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << ETag: W/"2025_032025-09-25"
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Expires: Fri, 26 Sep 2025 15:11:47 GMT
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << queryid: 13275113939
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Content-Disposition: attachment; filename="sparql-E6DEB152182F615098A5E0C5E9AD74C7.srx"
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Content-Type: application/sparql-results+xml
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Content-Length: 713
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << X-Powered-By: sib.swiss
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Keep-Alive: timeout=5, max=100
+main 25-09-25 15:11:47 +0000 org.apache.http.headers
+  DEBUG: http-outgoing-0 << Connection: Keep-Alive
+main 25-09-25 15:11:47 +0000 org.apache.http.impl.execchain.MainClientExec
+  DEBUG: Connection can be kept alive for 5000 MILLISECONDS
+rdf4j-SharedHttpClientSessionManager-0 25-09-25 15:11:47 +0000 org.xml.sax.XMLReader
+  DEBUG: XMLReader initialized using JAXP: com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser@5a70c68f
+rdf4j-SharedHttpClientSessionManager-0 25-09-25 15:11:47 +0000 org.apache.http.impl.conn.PoolingHttpClientConnectionManager
+  DEBUG: Connection [id: 0][route: {s}->https://sparql.uniprot.org:443] can be kept alive for 5.0 seconds
+rdf4j-SharedHttpClientSessionManager-0 25-09-25 15:11:47 +0000 org.apache.http.impl.conn.DefaultManagedHttpClientConnection
+  DEBUG: http-outgoing-0: set socket timeout to 0
+rdf4j-SharedHttpClientSessionManager-0 25-09-25 15:11:47 +0000 org.apache.http.impl.conn.PoolingHttpClientConnectionManager
+  DEBUG: Connection released: [id: 0][route: {s}->https://sparql.uniprot.org:443][total available: 1; route allocated: 1 of 5; total allocated: 1 of 10]
