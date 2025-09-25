@@ -38,6 +38,8 @@ jobs:
       id: create_ttl
       run: |
         GITHUB_OUTPUT=$(java -jar sparql-examples-utils.jar import-github-issue -i ./examples -t tmp 2> error.log)
+        echo "Generated file:"
+        echo "$GITHUB_OUTPUT"
       env:
         GITHUB_ISSUE_BODY: ${{ github.event.issue.body }}
 
@@ -53,6 +55,7 @@ jobs:
       if: success()
       run: |
         echo ${GITHUB_OUTPUT}
+        rm -f error.log
         rm -rf examples/tmp
 
     - name: Create pull request with validated query
